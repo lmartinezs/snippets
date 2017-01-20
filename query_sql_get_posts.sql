@@ -1,4 +1,4 @@
-##SET @slug = "futbol";
+#SET @slug = "futbol";
 SET @nameCategory = "Autos";
 SET @taxonomy = "category"; # post_tag, category, post_format
 SELECT
