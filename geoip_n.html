@@ -1,0 +1,24 @@
+var MN_geo;
+function getStates(str){
+	var ciudades = {"agu":"Aguascalientes","bcn":"Baja California","bcs":"Baja California Sur","cam":"Campeche","chh":"Chihuahua","chp":"Chiapas","coa":"Coahuila","col":"Colima","dif":"Distrito Federal","dur":"Durango","gro":"Guerrero","gua":"Guanajuato","hid":"Hidalgo","jal":"Jalisco","mex":"Mexico","mic":"Michoacan","mor":"Morelos","nay":"Nayarit","nle":"Nuevo Leon","oax":"Oaxaca","pue":"Puebla","que":"Queretaro","roo":"Quintana Roo","sin":"Sinaloa","slp":"San Luis Potosi","son":"Sonora","tab":"Tabasco","tam":"Tamaulipas","tla":"Tlaxcala","ver":"Veracruz","yuc":"Yucatan","zac":"Zacatecas"};
+	for (var val in ciudades) { str = str.split(val).join(ciudades[val]); }	return str;
+}
+function loadRequest(myurl, cb){
+   var xmlhttp = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+   xmlhttp.onreadystatechange=function(){ if (xmlhttp.readyState==4 && xmlhttp.status==200){ cb(xmlhttp.responseText); } }
+   xmlhttp.open("GET",myurl,false); xmlhttp.send();
+}
+isAndroidChrome = (navigator.userAgent.match(/Android/i) !== null && navigator.userAgent.match(/Chrome/i) !== null)? true:false;
+var urlApi = 'http://usa.cloud.netacuity.com/webservice/query?u=d406cbe0-7dde-11e3-af42-0050569e004c&json=true';
+if(isAndroidChrome){	
+	loadRequest('http://geoip.esmas.com/ip', function(responseText) {
+		var ippublic = responseText;
+		urlApi = 'http://usa.cloud.netacuity.com/webservice/query?u=d406cbe0-7dde-11e3-af42-0050569e004c&json=true&ip='+ippublic;
+	});	
+}
+loadRequest(urlApi, function(responseText) {
+	var result = JSON.parse(responseText);
+	city_ = (result.response['edge-city'] == 'mexico city')? 'Mexico' : result.response['edge-city'];			
+	state_ = getStates(result.response['edge-region']);
+	MN_geo={ ip:result.response.ip, city:city_, state:state_, country:result.response['edge-country'].toUpperCase(), zc:result.response['edge-postal-code'] };
+});
