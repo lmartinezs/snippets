@@ -9,11 +9,11 @@ function loadRequest(myurl, cb){
    xmlhttp.open("GET",myurl,false); xmlhttp.send();
 }
 isAndroidChrome = (navigator.userAgent.match(/Android/i) !== null && navigator.userAgent.match(/Chrome/i) !== null)? true:false;
-var urlApi = 'http://usa.cloud.netacuity.com/webservice/query?u=d406cbe0-7dde-11e3-af42-0050569e004c&json=true';
+var urlApi = 'http://usa.cloud.netacuity.com/webservice/query?u=TOKEN&json=true';
 if(isAndroidChrome){	
 	loadRequest('http://geoip.esmas.com/ip', function(responseText) {
 		var ippublic = responseText;
-		urlApi = 'http://usa.cloud.netacuity.com/webservice/query?u=d406cbe0-7dde-11e3-af42-0050569e004c&json=true&ip='+ippublic;
+		urlApi = 'http://usa.cloud.netacuity.com/webservice/query?u=TOKEN&json=true&ip='+ippublic;
 	});	
 }
 loadRequest(urlApi, function(responseText) {
