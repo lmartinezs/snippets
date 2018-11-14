@@ -1,2 +1,2 @@
 # snippets
-Snippets and tricks to remember
+Snippets and tricks to remember.
